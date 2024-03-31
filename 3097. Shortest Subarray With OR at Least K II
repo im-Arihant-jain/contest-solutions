@@ -1,0 +1,46 @@
+class Solution {
+public:
+    int minimumSubarrayLength(vector<int>& nums, int k) {
+        
+        int i =0;
+        int j =0;
+        int n = nums.size();
+        int numel = INT_MAX;
+        vector<int> freq(32,0);
+        long ans = 0;
+        while(j<n){
+            ans = ans|nums[j];
+             for (int it = 0; it < 32; ++it) {
+        if (nums[j] & (1 << it)) {
+            freq[it]++;
+        }
+        }
+            while(i<=j && ans >=k){
+                
+                numel = min(numel , j-i+1);
+                 
+                ans = ans^nums[i];
+                for(int it=0;it<32;it++){
+                    if(freq[it]>0){
+                        if((1<<it)&nums[i]){
+                            freq[it]--;
+                            if(freq[it]>0){
+                                ans = ans|1<<it;
+                            
+                            }
+                        }
+                    }
+                }
+        
+                i++;
+            }
+            
+            j++;
+        }
+        if(numel==INT_MAX){
+            return -1;
+        }else{
+            return numel;
+        }
+    }
+};

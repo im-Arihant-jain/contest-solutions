@@ -1,0 +1,29 @@
+class Solution {
+  
+    int mod = 1e9 + 7;
+    int solve(int i, int prevIndex, int k, int currDiff, vector<int>& nums,unordered_map<int, unordered_map<int, unordered_map<int, unordered_map<int, int>>>>& dp) {
+        if (k == 0) return (currDiff % mod);
+        if (i == nums.size()) return 0;
+        
+        if (dp[i][prevIndex][k].count(currDiff))
+            return dp[i][prevIndex][k][currDiff];
+
+        int notTake = solve(i + 1, prevIndex, k, currDiff, nums,dp);
+        
+        int take = 0;
+        if (prevIndex == -1) {
+            take = solve(i + 1, i, k - 1, currDiff, nums,dp);
+        } else {
+            take = solve(i + 1, i, k - 1, min(currDiff, abs(nums[i] - nums[prevIndex])), nums,dp);
+        }
+
+        return dp[i][prevIndex][k][currDiff] = (take + notTake) % mod;
+    }
+
+public:
+    int sumOfPowers(vector<int>& nums, int k) {
+     sort(nums.begin(), nums.end());
+          unordered_map<int, unordered_map<int, unordered_map<int, unordered_map<int, int>>>> dp;
+        return solve(0, -1, k, 1e9, nums,dp);
+    }
+};

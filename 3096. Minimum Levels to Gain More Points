@@ -1,0 +1,38 @@
+class Solution {
+public:
+    int minimumLevels(vector<int>& possible) {
+        int n = possible.size();
+        int ds = -1;
+        int lds = 1;
+        int lbs = n-1;
+        if(possible[0]){
+            ds = 1;
+        }
+        int bs = 0;
+        for(int i =1;i< n;i++){
+            if(possible[i]==0){
+                bs--;
+            }else{
+                bs++;
+            }
+        }
+        if(ds>bs){
+            return 1;
+        }
+        for(int i=1;i<n;i++){
+            lds++;
+            lbs--;
+            if(possible[i]==0){
+                ds--;
+                bs++;
+            }else{
+                bs--;
+                ds++;
+            }
+            if(lbs>0 && ds>bs){
+                return i+1;
+            }
+        }
+        return -1;
+    }
+};

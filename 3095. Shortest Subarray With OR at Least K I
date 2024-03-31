@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int minimumSubarrayLength(vector<int>& nums, int k) {
+        int numel = INT_MAX;
+        int n = nums.size();
+        for(int i=0;i<n;i++){
+            int ans = 0;
+            for(int j=i;j<n;j++){
+                ans = ans|nums[j];
+                if(ans>=k){
+                    numel = min(numel,j-i+1);
+                }
+            }
+        }
+        if(numel==INT_MAX){
+            return -1;
+        }
+        return numel;
+    }
+};

@@ -1,0 +1,24 @@
+class Solution {
+public:
+    long long minOperationsToMakeMedianK(vector<int>& arr, int k) {
+        sort(arr.begin(),arr.end());
+        int n = arr.size();
+        int medind = n/2;
+        
+        long long ans = 0;
+        if(arr[medind]>k){
+            while(medind>=0 && arr[medind]>k){
+                ans += arr[medind]-k;
+                medind--;
+            }
+        }else if(medind<n && arr[medind]<k){
+             while(medind<n && arr[medind]<k){
+                ans += abs(arr[medind]-k);
+                medind++;
+            }
+        }else{
+            return 0;
+        }
+        return ans;
+    }
+};

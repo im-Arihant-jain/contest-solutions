@@ -1,0 +1,38 @@
+class Solution {
+public:
+     vector<bool> sieve(int n) {
+         vector<bool> primes(n + 1, true);
+        
+        primes[0] = primes[1] = false;
+        for (int i = 2; i * i <= n; ++i) {
+            if (primes[i]) {
+                for (int j = i * i; j <= n; j += i) 
+                    primes[j] = false;
+            }
+        }
+        
+        return primes;
+    }
+    int maximumPrimeDifference(vector<int>& nums) {
+          int n = nums.size();
+        
+         vector<bool> primes = sieve(101);
+        
+        int maxDifference = 0;
+        int firstPrimeIndex = -1, currentIndex = 0;
+        while (currentIndex < n) {
+            if (primes[nums[currentIndex]]) {
+                if (firstPrimeIndex != -1) {
+                    maxDifference =  max(maxDifference, currentIndex - firstPrimeIndex);
+                } else {
+                    firstPrimeIndex = currentIndex;
+                }
+            }
+            
+            ++currentIndex;
+        }
+        
+        return maxDifference; 
+        //2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97
+    }
+};

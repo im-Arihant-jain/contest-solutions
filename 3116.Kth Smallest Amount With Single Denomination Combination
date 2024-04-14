@@ -1,0 +1,46 @@
+class Solution
+{
+    long long findPosscnt(vector<int> &coins, long long x)
+    {
+        int m = coins.size();
+        int nn = (1 << m);
+        long long cnt = 0;
+        for (int i = 1; i < nn; i++)
+        {
+            long long findlcm = 1;
+            for (int j = 0; j < m; j++)
+            {
+                if (i & (1 << j))
+                {
+                    findlcm = lcm(findlcm, coins[j]);
+                }
+            }
+            if (__builtin_popcount(i) & 1)
+                cnt += x / findlcm;
+            else
+                cnt -= x / findlcm;
+        }
+        return cnt;
+    }
+ 
+public:
+    long long findKthSmallest(vector<int> &coins, int k)
+    {
+        long long cons = k;
+        long long l = 1, r = 1e11, ans = 0;
+        while (l <= r)
+        {
+            long long m  = (l+r)/2;
+            long long cnt = 0;
+            cnt = findPosscnt(coins, m);
+            if (cnt < cons)
+                l = m + 1;
+            else
+            {
+                ans = m;
+                r = m - 1;
+            }
+        }
+        return ans;
+    }
+};

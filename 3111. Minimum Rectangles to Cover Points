@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int minRectanglesToCoverPoints(vector<vector<int>>& points, int w) {
+        int size = points.size();
+        set<int> s;
+        for(int i=0;i<size;i++)
+        {
+            s.insert(points[i][0]);
+        }
+        auto it = s.begin();
+        int answ = 1;
+        int start = *it;
+        while(it!=s.end())
+        {
+            if((*it)<=(start+w))
+            {
+                
+            }
+            else
+            {
+                answ+=1;
+                start = *it;
+            }
+            it++;
+        }
+        return answ;
+    }
+};

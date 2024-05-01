@@ -1,0 +1,44 @@
+class Solution {
+public:
+    int mod=1e9+7;
+ 
+    int helper(int zero, int one, int isOne, int limit, int count, vector<vector<vector<vector<int>>>>& dp){
+        if(count>limit)
+            return 0;
+        if(zero==0 and one==0){
+            return 1;
+        }
+        
+        
+        
+        if(dp[isOne][zero][one][count]!=-1)
+            return dp[isOne][zero][one][count];
+        int res=0;
+       if(isOne==0){
+            if(zero>0){
+                res=(res+helper(zero-1, one, 0, limit, count+1, dp))%mod;
+            }
+            
+            if(one>0){
+                res=(res+helper(zero, one-1, 1, limit, 1, dp))%mod;
+            }
+        }else{
+            if(zero>0){
+                res=(res+helper(zero-1, one, 0, limit, 1, dp))%mod;
+            }
+            
+            if(one>0){
+                res=(res+helper(zero, one-1, 1, limit, count+1, dp))%mod;
+            }
+        }
+        
+        return dp[isOne][zero][one][count]=res;
+    }
+    int numberOfStableArrays(int zero, int one, int limit) {
+        vector<vector<vector<vector<int>>>>dp(3,vector<vector<vector<int>>>(zero+1,vector<vector<int>>(one+1,vector<int>(limit+1,-1))));
+       
+        return (helper(zero-1, one, 0, limit, 1, dp)+helper(zero, one-1, 1, limit, 1, dp))%mod;
+    }
+};
+
+

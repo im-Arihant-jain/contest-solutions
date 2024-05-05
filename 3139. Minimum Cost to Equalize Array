@@ -1,0 +1,41 @@
+#define ll long long
+class Solution {
+public:
+    int mod = 1e9 + 7;
+    ll sum = 0;
+    ll mini = 1e8;
+
+    ll solve(vector<int> &nums, ll cost1, ll cost2, ll maxii){
+        ll maxdiff = maxii - mini;
+        ll n = nums.size();
+
+        ll total = maxii*n - sum;
+        if( 2*cost1 <= cost2 ) return total * cost1;
+        
+        ll last = total - maxdiff;
+        if( last < maxdiff ) return ( maxdiff - last ) * cost1 + last * cost2;
+        
+        if( total % 2 == 0 ) return (total/2) * cost2;
+        else return  (total/2) * cost2  + cost1 ;
+    }
+    
+    int minCostToEqualizeArray(vector<int>& nums, int cost1, int cost2) {
+        
+        ll maxi = 0;
+        
+        for(int i=0;i<nums.size();i++){
+            maxi = max(maxi,1LL*nums[i]);
+            mini = min(mini,1LL*nums[i]);
+            sum += nums[i];
+        }
+        
+        ll ans =  1e18;
+
+        for(int i=maxi;i<=2*maxi;i++){
+            ll d = solve(nums, cost1, cost2, i);
+            ans = min(ans,d);
+        }
+                
+        return ans%mod;
+    }
+};

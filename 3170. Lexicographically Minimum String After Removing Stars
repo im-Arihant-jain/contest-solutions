@@ -1,0 +1,50 @@
+class Solution {
+public:
+    string clearStars(string s) {
+        int length = s.length();
+        priority_queue<int,vector<int>,greater<int>> pq;
+         vector<char> associated;
+        vector<vector<int>> index(26);
+        int start = 0;
+         unordered_map<int,int> indices;
+        for(int i=start;i<length;i++)
+        {
+            if(s[i]=='*')
+            {
+                indices[index[pq.top()][index[pq.top()].size()-1]]=1;
+                index[pq.top()].pop_back();
+                cout<<pq.top()<<endl;
+                pq.pop();
+            }
+            else
+            {
+                
+                index[s[i]-'a'].push_back(i);
+                pq.push((s[i]-'a'));
+            }
+        }
+//         while(pq.empty()==false)
+//         {
+//             cout<<pq.top();
+//             pq.pop();
+            
+//         }
+        string finally = "";
+       
+        for(int i=0;i<length;i++)
+        {
+            if(s[i]=='*')
+            {
+                
+            }
+            else
+            {
+                if(indices.find(i)==indices.end())
+                {
+                    finally.push_back(s[i]);
+                }
+            }
+        }
+        return finally;
+    }
+};

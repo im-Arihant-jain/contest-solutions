@@ -1,0 +1,59 @@
+class Solution {
+public:
+    long long calculateValue(vector<int> &bitCount) {
+        long long result = 0;
+
+        for(int i = 0; i < 32; ++i) {
+            if(bitCount[i] == 0) { // setting the bit if zero count is 0.
+                result += pow(2, i);
+            }
+        }
+        
+        return result;
+    }
+
+    void addValueToWindow(vector<int> &bitCount, int value) {
+        for(int i = 0; i < 32; ++i) {
+            if(!((value >> i) & 1)) { // checking if the bit is zero
+                bitCount[i]++;
+            }
+        }   
+    }
+
+    void removeValueFromWindow(vector<int> &bitCount, int value) {
+        for(int i = 0; i < 32; ++i) {
+            if(!((value >> i) & 1)) { // checking if the bit is zero
+                bitCount[i]--;
+            }
+        }   
+    }
+
+    int minimumDifference(vector<int>& nums, int k) {
+        int n = nums.size();
+        int left = 0, right = 0;
+        long long current = nums[0];
+        long long minDiff = INT_MAX;
+        vector<int> bitCount(32, 0);// keeps track of zeroes
+        
+        while(right < n) {
+            addValueToWindow(bitCount, nums[right]);
+            current = calculateValue(bitCount);
+            minDiff = min(minDiff, abs(current - k));
+            
+            while(current < k && left <= right) {
+                removeValueFromWindow(bitCount, nums[left]);
+                current = calculateValue(bitCount);
+                minDiff = min(minDiff, abs(current - k));
+                left++;
+            }
+            
+            if(current == k) {
+                return 0;
+            }
+            right++;
+        }
+        
+        minDiff = min(minDiff, abs(current - k));
+        return minDiff;
+    }
+};
